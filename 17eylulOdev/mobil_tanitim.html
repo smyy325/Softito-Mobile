@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MOBİL FORMLAR & VALİDASYON</title>
+</head>
+<body>
+
+    <header>
+        <h1>MOBİL FORMLAR & VALİDASYON</h1>
+        <p>SecureForm Mobil Uygulaması: Güvenli, hızlı ve kullanıcı dostu form altyapısı.</p>
+        <nav aria-label="İçindekiler">
+            <a href="#klavye">Sanal Klavyeler</a> | 
+            <a href="#otp">SMS OTP</a> | 
+            <a href="#regex">HTML5 Regex</a> | 
+            <a href="#honeypot">Bot Tuzağı</a> |
+            <a href="#gorsel">Modal & Görsel</a>
+        </nav>
+    </header>
+    
+    <main>
+        <article>
+            <br>
+            <img src="https://forms.app/cdn-cgi/image/w=1000,q=80,f=webp,sharpen=1/assets/img/sections/leftandright/all-devices.webp" alt="SecureForm Uygulaması Tanıtım Afişi" width="100%" >
+            <section id="klavye">
+                <h2>Mobil Sanal Klavyeler (inputmode & enterkeyhint)</h2>
+                <p>Uygulamamızda kullanıcı deneyimini artırmak için doğru klavye tiplerini çağırıyoruz. Rakam girilecek alanlarda <code>inputmode="numeric"</code> kullanarak doğrudan sayısal klavyenin açılmasını sağlıyoruz. Ayrıca <code>enterkeyhint="send"</code> ile klavyedeki "Enter" tuşunu mobil cihaza özel olarak özelleştiriyoruz.</p>
+            </section>
+
+            <section id="otp">
+                <h2>SMS OTP Otomatik Doldurma (one-time-code)</h2>
+                <p>Kullanıcı girişlerinde gönderdiğimiz doğrulama SMS'lerinin cihaza ulaştığı an klavyede belirmesi için <code>autocomplete="one-time-code"</code> niteliğini kullanıyoruz. Bu sayede kullanıcılar kodu manuel girmek zorunda kalmıyor.</p>
+            </section>
+
+            <section id="regex">
+                <h2>Yerel HTML5 Validasyonu & Regex (TCKN, Tel, Şifre)</h2>
+                <p>Sunucuyu yormadan mobil cihaz üzerinde hızlı doğrulama yapmak için HTML5'in <code>pattern</code> özelliğinden faydalanıyoruz. Uygulamamızdaki Regex standartları:</p>
+                <ul>
+                    <li><strong>TCKN Doğrulama:</strong> 11 haneli sayı kuralı.</li>
+                    <li><strong>Telefon Numarası:</strong> 5 ile başlayan 10 haneli format.</li>
+                    <li><strong>Şifre Güvenliği:</strong> Büyük harf, küçük harf, rakam ve minimum 8 karakter zorunluluğu.</li>
+                </ul>
+            </section>
+
+            <section id="honeypot">
+                <h2>Form Siber Savunması & Honeypot Bot Tuzağı</h2>
+                <p>Uygulamamıza gelen kayıt isteklerinin botlar tarafından manipüle edilmesini engellemek için Honeypot tekniğini kullanıyoruz. Kullanıcının göremediği ama HTML kodunda yer alan gizli bir input alanı botlar tarafından doldurulduğunda, form anında geçersiz sayılıyor.</p>
+            </section>
+
+            <section id="gorsel">
+                <h2>Yerel Modal & Responsive Görsel</h2>
+                <p>Kullanıcıya gösterilen hata veya onay mesajları için HTML5 <code>&lt;dialog&gt;</code> elementini tercih ediyoruz. Uygulama içi görsellerimiz ise taşmaları önlemek için her cihaza duyarlı olarak (responsive) tasarlanmıştır.</p>
+                <img src="https://www.techex.com.tr/uploads/f9f1bc23-1de0-404f-874a-5e93174ed158.png" alt="Mobil Uyumlu Form Ekranı Çizimi" width="100%" >
+            </section>
+        </article>
+        <section id="tablo">
+            <h2>Validasyon Yöntemleri Karşılaştırması</h2>
+            <table border="1">
+                <thead>
+                    <tr>
+                        <th>Doğrulama Türü</th>
+                        <th>Çalışma Ortamı</th>
+                        <th>Temel Amacı</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>HTML5 Pattern (Regex)</td>
+                        <td>Mobil Cihaz (İstemci)</td>
+                        <td>Yanlış veri girişini anında engellemek</td>
+                    </tr>
+                    <tr>
+                        <td>Honeypot Tuzağı</td>
+                        <td>Sunucu Tarafı</td>
+                        <td>Spam ve bot saldırılarını durdurmak</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+    </main>
+    <aside>
+        <h3>Mimari İpucu</h3>
+        <p>Tıpkı Clean Code ve SOLID prensiplerinde olduğu gibi, form bileşenlerini tasarlarken de her bir HTML etiketine sadece tek bir sorumluluk yüklemeliyiz (Single Responsibility). Semantik etiketler tam olarak bu işe yarar.</p>
+    </aside>
+
+    <footer>
+        <p>2026 SecureForm Mobil Uygulaması. Tüm Hakları Saklıdır.</p>
+    </footer>
+</body>
+</html>
