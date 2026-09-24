@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>JS İlk Ders</title>
+  </head>
+  <body>
+    <script>
+      /*
+        //1. var felaketi: süslü parantez dinlemez dışarıya sızar
+
+        if(true){
+            var tehlikeliSayi = 999;
+        }
+        console.log("var sızdı mı?", tehlikeliSayi);
+
+        // 2.let ve const kalkanı: süslü parantez bir oda çıkış yasak çıkamaz
+
+        if(true){
+            let guvenliSayi=42;
+            const PI=3.415;
+            console.log("oda içi:", guvenliSayi, PI);
+        }
+        //console.warn(guvenliSayi);
+
+        //3. const değiştirilmezlik kuralı
+        const API_URL = "https://somaya.arab/";
+        console.log(API_URL);
+        //let API_URL = "tekrar eden link";
+
+        // dikkat edin buraya
+        const arac = {marka: "Togg", model:"T10K"};
+        console.log(arac);
+        arac.renk="Beyaz";
+        console.log(arac);
+        //bu yasak kullanamzsın
+        arac={baska:"obje"};
+        console.log(arac);
+
+        // VERİ TİPLERİ & TİP DÖNÜŞÜMÜ
+        const isim= "Sümeyye";
+        const bataryaKapasite=88.5;
+        const sarjTamamlandi = false;
+        let sonrakiRandevu;
+        const servisNotu=null;
+        const buyukSayi=656161556545n;
+        const gizliAnahtar= Symbol("id");
+
+        console.log(typeof isim);
+        console.log(typeof bataryaKapasite);
+        console.log(typeof sarjTamamlandi);
+        console.log(typeof sonrakiRandevu);
+        console.log(typeof servisNotu);
+
+        // otomatik tip çevrimi
+        console.log("5"+2); // + işaret metin birleştirme yapar 52
+        console.log("5"-2); // - işareti string i zorla sayıya çevirir 3
+        console.log("5"*"4"); // * çarpma yapar 20
+        console.log("bes"*2);//NaN not a number  hatası alırız
+
+
+        console.log(typeof NaN);
+        console.log(NaN === NaN);
+        console.log(Number.isNaN(NaN));
+
+
+        const bataryaSeviyesi=14;
+        const istasyonUygunMu=true;
+        const bakiyeTL=450;
+        const minimumGirisTutari=200;
+        if(!istasyonUygunMu){
+            console.log('İstasyon şuanda servis dışı veya meşgul');
+        }
+        else if(bakiyeTL<minimumGirisTutari){
+            console.log(`bakiye yetersiz! en az ${minimumGirisTutari} gereklidir. Mevcut: ${bakiyeTL} ₺`);
+
+        }
+        else if ( bataryaSeviyesi<=20){
+            console.log("Kritik seviye ultra hızlı DC şarj moduna geçiliyor.");
+        }
+        else{
+            console.log("Standart şarj başlatılabilir.")
+        }
+
+
+        //Js de şu altı değer false olarak kabul edilir.
+        // false, 0, "", null, undefined, NaN
+        // bunun dışındaki herşey[] boş dizi olarak true olarak kabul edilir.
+
+        const kullaniciGirdisi="";
+        if(kullaniciGirdisi){
+            console.log("Girdi Dolu")
+        }
+        else{
+            console.log("Girdi Boş")
+        }
+
+
+        //Koşul ? dogruysa_deger:yanlisa_deger
+        const soketDurumu="mesgul";
+        const durumMesaji=soketDurumu==="uygun"?"Soket boşta":"soket kullanımda";
+        console.log(durumMesaji);
+         */
+
+      //arrow function
+      //klasik fonksiyon
+      function toplaKlasik(sayi1, sayi2) {
+        return sayi1 + sayi2;
+      }
+      //modern fonksiyon(es6 standartlarıyla)
+      const toplamModern = (sayi1, sayi2) => {
+        return sayi1 + sayi2;
+      };
+
+      //tek satırlık function arrow
+      const toplaKisa = (sayi1, sayi2) => sayi1 + sayi2;
+
+      //tek parametreli
+      const karesiniAl = (sayi) => sayi * sayi;
+      const profilUret = (ad, rol) => ({
+        ad: ad,
+        rol: rol,
+        kayitTarihi: 2026,
+      });
+      console.log("Roplama Sonucu", toplaKisa(15, 27));
+      console.log(karesiniAl(8));
+      console.log("Profil", profilUret("Sumeyye", "öğrenci"));
+
+      //meydan okuma konusu indirimli sepet tutarı hesaplayıcı
+      const indirimHesapla = (fiyat, indirim) => fiyat - indirim;
+      console.log(indirimHesapla(1000, 150));
+    </script>
+  </body>
+</html>
