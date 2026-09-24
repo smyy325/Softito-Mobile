@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Şarj Süresi Tahmini</title>
+  </head>
+  <body>
+    <script>
+      const sarjSuresiVeMaliyetHesapla = (mevcutYuzde, hedefYuzde, bataryaKw, istasyonKw, baslangicSaati) =>{
+        if(hedefYuzde<=mevcutYuzde) return "Yanlış, hedef var olandan fazla olmalı."
+        if(bataryaKw<=0 || istasyonKw<=0) return "yanlış, batarya 0 dan büyük olmalı. istasyon 0 dan büyük olmalı."
+        if(mevcutYuzde<0 || hedefYuzde>100) return "yüzdeler 0 ile 100 arasında olmalı."
+        if(baslangicSaati<0 || baslangicSaati>23) return "saat 0 ve 23 arasında olmalı."
+        const gece = baslangicSaati>=22 || baslangicSaati <6
+        const verimlilik = gece ? 0.95 : 0.85
+        const fiyatTL = gece ? 4.0 : 7.0
+        const gerekenKwh = ((hedefYuzde -mevcutYuzde)/100)*bataryaKw
+        const netGuc = istasyonKw*verimlilik
+        const dakika = (gerekenKwh/netGuc)*60
+        const maliyet = gerekenKwh *fiyatTL
+        return{
+            tarife: gece? "Gece Tarifesi":"Gündüz Tarifesi",
+            sure : dakika.toFixed(1),
+            doldurulanKwh: gerekenKwh,
+            tahminiMaliyetTL: maliyet.toFixed(2)
+        }
+      }
+      console.log(sarjSuresiVeMaliyetHesapla(20, 80, 60, 50, 14));
+      console.log(sarjSuresiVeMaliyetHesapla(20, 80, 60, 50, 23));
+    </script>
+  </body>
+</html>
