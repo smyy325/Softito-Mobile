@@ -34,7 +34,6 @@
         margin: 0 auto;
       }
 
-      /* Header & KPI */
       .header {
         margin-bottom: 24px;
         padding-bottom: 16px;
@@ -77,7 +76,6 @@
         margin-top: 4px;
       }
 
-      /* Layout */
       .layout {
         display: grid;
         grid-template-columns: 320px 1fr;
@@ -90,7 +88,6 @@
         }
       }
 
-      /* Form & Panel */
       .panel {
         background: var(--card);
         border: 1px solid var(--border);
@@ -147,7 +144,6 @@
         background: var(--clay-hover);
       }
 
-      /* Liste & Filtre */
       .filter-bar {
         display: flex;
         gap: 10px;
@@ -231,10 +227,10 @@
           <span>Kayıtlı Sipariş</span>
           <h3 id="kpiCount">0</h3>
         </div>
-        <idv class="kpi-card">
+        <div class="kpi-card">
           <span>Toplam Sipariş Tutarı: </span>
           <h3 id="kpiTotal">0 ₺</h3>
-        </idv>
+        </div>
         <div class="kpi-card">
           <span>Ortalama Ürün Fiyatı</span>
           <h3 id="kpiAvg">0 ₺</h3>
@@ -290,7 +286,6 @@
             </select>
           </div>
           <div id="orderContainer" class="order-list">
-            <!--Dinamik olarak elemanlar buraya basılacak/eklenecek-->
           </div>
         </section>
       </main>
@@ -302,7 +297,7 @@
           { id: 4, name: "Bulaşık Makinası", category: "Mutfak", price: 10000 },
           { id: 5, name: "Ocak", category: "Mutfak", price: 15000 },
         ];
-        //dom elementleri toplayalım
+        
         const orderContainer = document.getElementById("orderContainer");
         const orderForm = document.getElementById("orderForm");
         const searchInput = document.getElementById("searchInput");
@@ -310,6 +305,7 @@
         const kpiCount = document.getElementById("kpiCount");
         const kpiTotal = document.getElementById("kpiTotal");
         const kpiAvg = document.getElementById("kpiAvg");
+        
         const updateKPIs = (dataList) => {
           kpiCount.textContent = dataList.length;
 
@@ -325,12 +321,10 @@
           kpiAvg.textContent = `${Math.round(avg).toLocaleString("tr-TR")} ₺`;
         };
 
-        //filtreleme bölümü (dinamik dom/ render motoru)
         const renderOrders = () => {
           const term = searchInput.value.toLowerCase().trim();
           const selectedCat = categoryFilter.value;
 
-          //filtreleme bölümü
           const filtered = orders.filter((order) => {
             const matchesName = order.name.toLowerCase().includes(term);
             const mathesCategory =
@@ -350,8 +344,6 @@
             return;
           }
 
-          //dinamik element üretim
-
           filtered.forEach((order) => {
             const item = document.createElement("article");
             item.className = "order-item";
@@ -370,16 +362,47 @@
                 </div>
                 <div class="meta-box">
                 <span class="badge ${badgeClass}">${order.category}</span>
-                <button class="btn-del"
-                data-action="delete">Sil</button>
+                <button class="btn-del" data-action="delete">Sil</button>
                 </div>
                 `;
             orderContainer.appendChild(item);
             updateKPIs(filtered);
           });
         };
+
         searchInput.addEventListener("input", renderOrders);
         categoryFilter.addEventListener("change", renderOrders);
+
+        orderContainer.addEventListener("click", (e) => {
+          if (e.target.getAttribute("data-action") === "delete") {
+            const item = e.target.closest(".order-item");
+            const orderId = parseInt(item.getAttribute("data-id"));
+            orders = orders.filter((order) => order.id !== orderId);
+            renderOrders();
+          }
+        });
+
+        orderForm.addEventListener("submit", (e) => {
+          e.preventDefault();
+          
+          const nameInput = document.getElementById("prodName").value;
+          const catInput = document.getElementById("prodCat").value;
+          const priceInput = parseInt(document.getElementById("prodPrice").value);
+
+          const newOrder = {
+            id: Date.now(),
+            name: nameInput,
+            category: catInput,
+            price: priceInput
+          };
+
+          orders.push(newOrder);
+          renderOrders();
+          
+          orderForm.reset();
+          document.getElementById("prodPrice").value = "3250";
+        });
+
         renderOrders();
       </script>
     </div>
