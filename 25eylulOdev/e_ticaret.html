@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SMYY - Shopier</title>
+  <link rel="stylesheet" href="css/e_ticaret.css">
+</head>
+<body>
+
+  <!-- Başlık -->
+  <div class="container">
+    <header class="header">
+      <h1>SMYY - Shopier</h1>
+    </header>
+
+    <!-- Filtreleme ve Arama Alanları -->
+    <div class="controls">
+      <!-- Arama Kutusu -->
+      <div class="control-group">
+        <label for="search">Ürün Ara</label>
+        <input type="text" id="search" class="control-input" placeholder="Ne aramıştınız?">
+      </div>
+      
+      <!-- Kategori Seçimi -->
+      <div class="control-group">
+        <label for="category">Kategori</label>
+        <select id="category" class="control-input">
+          <option value="ALL">Tüm Kategoriler</option>
+          <option value="Canta">Çanta</option>
+          <option value="Ayakkabı">Ayakkabı</option>
+          <option value="Ceket">Ceket</option>
+        </select>
+      </div>
+
+      <!-- Sıralama Seçimi -->
+      <div class="control-group">
+        <label for="sort">Sıralama</label>
+        <select id="sort" class="control-input">
+          <option value="DEFAULT">Varsayılan</option>
+          <option value="PRICE_ASC">Fiyat: Düşükten Yükseğe</option>
+          <option value="PRICE_DESC">Fiyat: Yüksekten Düşüğe</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Ürünlerin JavaScript ile basılacağı boş HTML alanı -->
+    <div id="productGrid" class="grid"></div>
+  </div>
+
+  <script>
+    /* Mağazadaki tüm ürünlerin bilgilerini tutan dizidir.*/
+    const products = [
+      { id: 1, name: "Mango Kalın Topuk Bot", category: "Ayakkabı", price: 2500, image: "https://media.mango.com/is/image/punto/37025987-99-052?wid=2048", inStock: true, isNew: true },
+      { id: 2, name: "Zara Kısa Topuk Bot", category: "Ayakkabı", price: 3000, image: "https://static.zara.net/assets/public/480e/71eb/379b490e908e/0f69db217f19/12106611700-e2/12106611700-e2.jpg?ts=1757950812524&w=1500", inStock: false },
+      { id: 3, name: "Zara Kareli Trençkot", category: "Ceket", price: 4000, image: "https://static.zara.net/assets/public/3e0a/a2d9/4d5f47ebbc34/a66bc394a012/06318292710-a1/06318292710-a1.jpg?ts=1789732809295&w=2048", inStock: true },
+      { id: 4, name: "Mavi Kapüşonlu Ceket", category: "Ceket", price: 3000, image: "https://sky-static.mavi.com/mnresize/2010/2850/1110812-90372_image_1.jpg?v=1788181616133", inStock: true },
+      { id: 5, name: "Zara Mini Çanta", category: "Çanta", price: 1790, discountPrice: 1290, image: "https://static.zara.net/assets/public/8cba/f5da/d5364f43bdd5/0ad7b6ff5e7e/16107810719-e4/16107810719-e4.jpg?ts=1777367849942&w=1500", inStock: true },
+      { id: 6, name: "Zara Maxi Çanta", category: "Çanta", price: 2690, image: "https://static.zara.net/assets/public/1eba/4961/a9b14e44be1a/a40795e72336/16231810700-a2/16231810700-a2.jpg?ts=1787842064494&w=1500", inStock: true },
+    ];
+
+    /* Sürekli 'document.getElementById' çağırmamak ve performansı artırmak için HTML elemanlarını bir nesnede saklıyoruz. */
+    const elements = {
+      grid: document.getElementById("productGrid"),
+      search: document.getElementById("search"),
+      category: document.getElementById("category"),
+      sort: document.getElementById("sort")
+    };
+
+    /* Sayıları "2.500,00 ₺" şeklinde okunaklı para birimi formatına çeviren yardımcı fonksiyondur. */
+    const formatPrice = (price) => {
+      return new Intl.NumberFormat('tr-TR', { style: 'currency', currency: 'TRY' }).format(price);
+    };
+
+    /* Sıralama yaparken indirimli ürünlerde eski fiyatı değil, indirimli fiyatı baz almamızı sağlayan yardımcı fonksiyondur. */
+    const getActivePrice = (product) => {
+      return product.discountPrice ? product.discountPrice : product.price;
+    };
+
+    /*Filtreleme, sıralama ve ürünleri ekrana basma işlemlerinin tamamını yapar.
+  Inputlarda her değişiklik olduğunda bu fonksiyon baştan çalışır. */
+    const renderProducts = () => {
+      // 1. Kullanıcının girdiği değerleri alıyoruz
+      const searchTerm = elements.search.value.toLowerCase().trim();
+      const selectedCategory = elements.category.value;
+      const selectedSort = elements.sort.value;
+
+      // 2. Arama ve kategoriye göre ürünleri filtreliyoruz
+      let filteredProducts = products.filter(product => {
+        const matchName = product.name.toLowerCase().includes(searchTerm);
+        const matchCategory = selectedCategory === "ALL" || product.category === selectedCategory;
+        // Hem isme hem de kategoriye uyuyorsa true döner
+        return matchName && matchCategory;
+      });
+
+      // 3. Fiyata göre sıralama işlemini yapıyoruz
+      if (selectedSort === "PRICE_ASC") {
+        filteredProducts.sort((a, b) => getActivePrice(a) - getActivePrice(b));
+      } else if (selectedSort === "PRICE_DESC") {
+        filteredProducts.sort((a, b) => getActivePrice(b) - getActivePrice(a));
+      }
+
+      // 4. Önceki ürünleri temizliyoruz ki üzerine ekleme yapmasın
+      elements.grid.innerHTML = "";
+
+      // 5. Eğer filtrelenen ürün yoksa kullanıcıya "Bulunamadı" mesajı gösteriyoruz
+      if (filteredProducts.length === 0) {
+        elements.grid.innerHTML = `
+          <div class="empty-state">
+            <h3>Ürün bulunamadı</h3>
+            <p>Arama kriterlerinizi değiştirerek tekrar deneyin.</p>
+          </div>
+        `;
+        return; 
+      }
+
+      /*Performans için ürünleri tek tek ekrana basmak yerine sanal bir kutuya (fragment) doldurup 
+ en son hepsini tek seferde DOM'a (ekrana) basıyoruz. */
+      const fragment = document.createDocumentFragment();
+
+      // 6. Filtrelenmiş her ürün için HTML kartını oluştururuz
+      filteredProducts.forEach(product => {
+        const card = document.createElement("article");
+        card.className = "card";
+        
+        // Ürünün özelliklerine (yeni, indirimli, tükendi) göre etiketleri dinamik oluşturuyoruz
+        let badgesHTML = '<div class="badges-container">';
+        if (!product.inStock) {
+          badgesHTML += `<span class="badge badge-out-of-stock">Tükendi</span>`;
+        }
+        if (product.isNew) {
+          badgesHTML += `<span class="badge badge-new">Yeni</span>`;
+        }
+        if (product.discountPrice) {
+          badgesHTML += `<span class="badge badge-discount">İndirimli</span>`;
+        }
+        badgesHTML += '</div>';
+
+        // İndirim durumuna göre fiyat bölümünün HTML'ini dinamik oluşturuyoruz
+        let priceHTML = '';
+        if (product.discountPrice) {
+          priceHTML = `
+            <div class="price-container">
+              <span class="price-old">${formatPrice(product.price)}</span>
+              <span class="card-price discounted">${formatPrice(product.discountPrice)}</span>
+            </div>
+          `;
+        } else {
+          priceHTML = `
+            <div class="price-container">
+              <span class="card-price">${formatPrice(product.price)}</span>
+            </div>
+          `;
+        }
+
+        // Tükendiyse resmi soluk yapmak ve butonu pasif hale getirmek için gerekli değişkenleri atıyoruz
+        const imageClass = product.inStock ? "card-image" : "card-image grayscale";
+        const buttonHTML = product.inStock 
+          ? `<button class="btn-add">Sepete Ekle</button>` 
+          : `<button class="btn-add" disabled>Tükendi</button>`;
+
+        // Oluşturduğumuz dinamik parçaları ürün kartının HTML yapısının içine yerleştiriyoruz
+        card.innerHTML = `
+          <div class="card-image-wrapper">
+            ${badgesHTML}
+            <img src="${product.image}" alt="${product.name}" class="${imageClass}" loading="lazy">
+          </div>
+          <div class="card-content">
+            <span class="card-category">${product.category}</span>
+            <h2 class="card-title">${product.name}</h2>
+            <div class="card-footer">
+              ${priceHTML}
+              ${buttonHTML}
+            </div>
+          </div>
+        `;
+        
+        fragment.appendChild(card);
+      });
+
+      // 7. Tüm ürünler sanal kutuya eklendikten sonra tek seferde sayfaya yazdırıyoruz
+      elements.grid.appendChild(fragment);
+    };
+
+    /* Kullanıcı arama kutusuna yazı yazdığında, kategori değiştirdiğinde veya sıralamayı değiştirdiğinde 
+       ürünleri yeniden filtreleyip ekrana basması için tetikleyiciler ekliyoruz. */
+    elements.search.addEventListener("input", renderProducts);
+    elements.category.addEventListener("change", renderProducts);
+    elements.sort.addEventListener("change", renderProducts);
+    // Sayfa ilk yüklendiğinde tüm ürünleri göstermek için fonksiyonu bir kez manuel çalıştırıyoruz
+    renderProducts();
+  </script>
+</body>
+</html>
