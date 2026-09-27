@@ -1,0 +1,292 @@
+/* :root, sayfanın en temelini temsil eder. 
+   Burada tanımladığımız "--isim" şeklindeki değişkenleri tüm sayfada kullanabiliriz.*/
+:root {
+    --bg: #f8f7f4;           
+    --card: #ffffff;        
+    --border: #e6e5df;      
+    --text: #181716;         
+    --muted: #6b6963;        
+    --clay: #c85a32;         
+    --clay-hover: #b04e29;   
+    --font-main: "Plus Jakarta Sans", system-ui, sans-serif; 
+    --font-mono: "JetBrains Mono", monospace;                
+}
+
+/* Yıldız (*), sayfadaki İSTİSNASIZ TÜM elemanları seçer. ::before ve ::after ise sanal elemanlardır. */
+*,
+*::before,
+*::after {
+    /* box-sizing: border-box -> Bir kutuya genişlik verdiğinizde (örn: 100px), 
+       buna iç boşluk (padding) ve kenarlık (border) eklendiğinde kutu 120px'e çıkıp sayfayı bozmasın diye kullanılır. 
+       Her şeyi o 100px'in içine sığdırmaya zorlar. */
+    box-sizing: border-box;
+    /* Tarayıcıların kendi kafasına göre koyduğu dış (margin) ve iç (padding) boşlukları sıfırlıyoruz. */
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background: var(--bg);       /* Arka plan rengini yukarıda tanımladığımız değişkenden alır */
+    color: var(--text);          /* Yazı rengini değişkenden alır */
+    font-family: var(--font-main); /* Ana yazı tipini uygular */
+    padding: 36px 16px;          /* Üst-alttan 36px, sağ-soldan 16px iç boşluk bırakır (sayfa kenarlara yapışmasın diye) */
+    line-height: 1.5;            /* Satır yüksekliği. Yazıların alt alta binmemesi için %150 boşluk bırakır. */
+}
+
+.kokpit {
+    max-width: 960px; /* İçeriğin genişliği en fazla 960 piksel olabilir (büyük ekranlarda devasa uzamasın diye) */
+    margin: 0 auto;   /* margin (dış boşluk): Üst/alt 0 olsun, sağ/sol 'auto' (otomatik) olsun. 
+                         Bu taktik, bir kutuyu sayfanın tam ortasına (yatayda) hizalamak için kullanılır. */
+}
+
+.header {
+    margin-bottom: 24px;         /* Başlığın Altındaki elemanlarla arasına 24px dış boşluk bırakır */
+    padding-bottom: 16px;        /* Çizginin başlığa yapışmaması için altından 16px iç boşluk verir */
+    border-bottom: 1px solid var(--border); /* Başlığın altına 1 piksel kalınlığında düz (solid) bir çizgi çeker */
+}
+
+.header__tag {
+    font-size: 11px;             /* Yazı boyutu: 11 piksel (küçük) */
+    text-transform: uppercase;   /* Tüm harfleri BÜYÜK HARF yapar (Yazıyı HTML'de küçük yazsanız bile) */
+    letter-spacing: 0.12em;      /* Harflerin arasını biraz açarak daha estetik durmasını sağlar */
+    color: var(--clay);          
+    font-weight: 700;            
+}
+
+.header__title {
+    font-size: 26px;             
+    font-weight: 700;            
+    margin-top: 2px;             /* Üstteki turuncu etiketle arasına sadece 2px ufak bir boşluk koyar */
+}
+
+.kpi-grid {
+    display: grid;               /* Grid (Izgara) sistemi: Elemanları tablo gibi satır ve sütunlara bölmemizi sağlar */
+    
+    /* grid-template-columns: Sütunların yapısını belirler. 
+       repeat(3, 1fr) demek: Yan yana 3 sütun oluştur, her biri eşit genişlikte (1fr = 1 fraction/parça) olsun. */
+    grid-template-columns: repeat(3, 1fr);
+    
+    gap: 14px;                   /* Kartların (kutuların) arasındaki boşluk 14 piksel olsun */
+    margin-bottom: 24px;        
+}
+
+.kpi-card {
+    background: var(--card);     
+    border: 1px solid var(--border); /* Etrafında gri, 1px kalınlığında kenarlık (çerçeve) olsun */
+    border-radius: 8px;          /* border-radius: Köşeleri 8px yumuşat/yuvarla (Sivri durmasın) */
+    padding: 14px 18px;          
+}
+
+.kpi-card span {
+    font-size: 12px;
+    color: var(--muted);         
+    font-weight: 600;           
+}
+
+.kpi-card h3 {
+    font-size: 22px;
+    font-weight: 700;
+    font-family: var(--font-mono); 
+    margin-top: 4px;             
+}
+
+.layout {
+    display: grid;               
+    grid-template-columns: 320px 1fr;
+    gap: 24px;                   
+}
+
+/* @media: Sitenin farklı ekran boyutlarına uyum sağlaması (Mobil Uyumlu) içindir. */
+@media (max-width: 768px) {
+    /* Ekran genişliği 768px'den küçükse (Yani tablet veya telefonsa) aşağıdaki kurallar geçerli olur: */
+    .layout,
+    .kpi-grid {
+        grid-template-columns: 1fr; 
+    }
+}
+
+.panel {
+    background: var(--card);     
+    border: 1px solid var(--border); 
+    border-radius: 10px;         
+    padding: 20px;               
+}
+
+.panel h4 {
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 14px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border); 
+}
+
+.field {
+    margin-bottom: 12px;         
+}
+
+.field label {
+    display: block;              /* Label normalde yan yana dizilir. block yapınca tam satırı kaplar, altındakini aşağı iter. */
+    font-size: 12px;
+    font-weight: 600;
+    margin-bottom: 4px;
+}
+
+.field input,
+.field select {
+    width: 100%;                
+    padding: 8px 10px;           
+    font-size: 13px;
+    font-family: inherit;        
+    background: var(--bg);       
+    border: 1px solid var(--border); 
+    border-radius: 6px;         
+}
+
+/* :focus durumu, kullanıcının fareyle kutuya tıklayıp yazı yazmaya başladığı anı temsil eder. */
+.field input:focus,
+.field select:focus {
+    outline: none;               /* Tarayıcının kendi koyduğu kalın mavi odak çizgisini iptal eder */
+    border-color: var(--clay);   
+    background: #fff;            
+}
+
+.btn-submit {
+    width: 100%;                 
+    background: var(--clay);    
+    color: #fff;               
+    border: none;                
+    padding: 10px;               
+    font-size: 13px;
+    font-weight: 600;
+    border-radius: 6px;         
+    /* cursor: pointer; Fare butonun üzerine geldiğinde ok işareti yerine "Tıklayan El" (Pointer) ikonuna dönüşsün */
+    cursor: pointer;             
+    margin-top: 6px;           
+}
+
+/* :hover durumu, farenin tıklaMADAN sadece elemanın üzerinde durduğu anı temsil eder. */
+.btn-submit:hover {
+    background: var(--clay-hover); /* Fare üstüne gelince butonun rengini bir ton koyulaştırır (Efekt) */
+}
+
+.filter-bar {
+    display: flex;               /* Flexbox sistemi: İçindeki elemanları (input ve select) yan yana dizer */
+    gap: 10px;                   
+    margin-bottom: 14px;
+}
+
+.filter-bar input,
+.filter-bar select {
+    padding: 8px 10px;
+    font-family: inherit;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+}
+
+.filter-bar input:focus,
+.filter-bar select:focus {
+    outline: none;
+    border-color: var(--clay);
+    background: #fff;
+}
+
+.filter-bar input {
+    margin-bottom: 0;
+    font-size: 13px;
+    
+    /* flex: 1; -> Yanındaki "select" kutusu kendi genişliğini (130px) aldıktan sonra,
+       arama çubuğunun geriye kalan TÜM BOŞLUĞU esneyerek doldurmasını sağlar. */
+    flex: 1; 
+}
+
+.filter-bar select {
+    width: 130px;               
+    font-size: 12px;
+    padding: 6px;
+}
+
+.empty-state {
+    padding: 24px;
+    text-align: center;          /* Yazıyı tam ortaya hizalar (Sağa sola değil) */
+    color: var(--muted);         
+    font-size: 12px;
+}
+
+.order-list {
+    display: flex;
+    flex-direction: column;      /* flex-direction: column -> Flexbox'ın elemanları yan yana DEĞİL, alt alta dizmesini söyler. */
+    gap: 10px;                   
+}
+
+.order-item {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 12px 14px;
+    display: flex;               /* İçeriği (İsim+Fiyat grubu ile Kategori+Sil grubu) yatay dizer */
+    
+    /* justify-content: space-between -> İki grubun arasını MÜMKÜN OLDUĞUNCA AÇAR. 
+       Yani yazıyı en sola, butonları en sağa yaslar. */
+    justify-content: space-between; 
+    align-items: center;            
+}
+
+.order-item h5 {
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.order-item p {
+    font-size: 12px;
+    color: var(--muted);
+}
+
+.meta-box {
+    display: flex;               
+    align-items: center;         
+    gap: 10px;                   
+}
+
+.badge {
+    font-size: 11px;
+    padding: 2px 7px;
+    border-radius: 4px;
+    font-weight: 600;
+    background: #fef3c7;        
+    color: #92400e;             
+    font-family: var(--font-mono); 
+}
+
+
+.badge--mobilya {
+    background: #e0e7ff;         
+    color: #3730a3;              
+}
+
+.badge--aydinlatma {
+    background: #fef3c7;
+    color: #b45309;
+}
+
+.badge--seramik {
+    background: #d1fae5;        
+    color: #065f46;              
+}
+
+
+.btn-del {
+    background: transparent;     
+    border: 1px solid var(--border); 
+    color: var(--muted);         
+    font-size: 11px;
+    padding: 4px 8px;
+    border-radius: 4px;
+    cursor: pointer;             
+}
+
+.btn-del:hover {
+    background: #ef4444;        
+    color: #fff;                 
+    border-color: #ef4444;      
+}
