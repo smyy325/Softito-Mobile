@@ -35,6 +35,7 @@ void main(){
 
 
 
+//birden fazla dinleyici olabilir. örneğin UI ekranı ve analitik servis aynı streami dinleyebilir. stream tek bir dinleyiciye sahiptir. eğer birden fazla dinleyici olacaksa broadcast stream kullanılır.
     final broadcastStream =controller.stream.asBroadcastStream();
     broadcastStream.listen((d)=>print("UI ekranı: $d"));
     broadcastStream.listen((d)=> print("Analitik servis ekranı: $d"));
