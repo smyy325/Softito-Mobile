@@ -80,7 +80,7 @@ void main() {
   }else{
     print("Geçersiz email");
   }  
-}*/
+}
 
 abstract class Identifiable{
   String get id;
@@ -95,4 +95,19 @@ class GenericCache<T extends Identifiable>{
 }
 //tip güvenliğini burda sağlıyoruz. tipi string değilse çalıştırma. number gelirse çalıştırma yazdırma. burası ekstra güvenlik sağlıyor.
 T? getById(String id)=> _storage[id];
+}*/
+
+void main(){
+    print("1.senkron başladı");
+    scheduleMicroTask(() {
+        print("2.Task oluştu(vip kuyruk)");
+    });
+    Future ((){
+        print("3.standart event kuyruğu");
+
+    });
+    Future.microtask((){
+        print("4.future.microtast çalıştı");
+    });
+    print("5.senkron kod tamamlandı");
 }
